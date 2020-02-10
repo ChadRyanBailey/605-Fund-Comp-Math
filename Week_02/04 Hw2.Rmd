@@ -1,0 +1,63 @@
+---
+title: "Data 605 Homework Assignment 2, Problem Set 2"
+output: html_document
+---
+
+This script factorizes a matrix A into LU.
+
+
+```{r}
+
+## load test matrix
+    A <- matrix(rbind(  c( 2,  4,  5, -2)
+                      , c(-4, -5, -8,  1)
+                      , c( 2, -5,  1,  8)
+                      , c(-6,  0, -3,  1)), nrow = 4)
+
+## get the dimensions of the matrix
+    A_nrows <- nrow(A)
+    A_ncols <- ncol(A)
+    
+## initial load of factorized matrices U & L
+    U <- A
+    L <- matrix(rep(0, A_nrows*A_nrows), nrow = A_nrows)
+    
+    # cycle through each row
+    for(i in c(1:A_nrows)) {
+      
+      #cycle through each column within the current row
+      for(j in c(i:A_ncols)) {
+        
+        # find pivots
+        # if NOT a pivot, proceed to next column
+        if(U[i, j] == 0) {next}  
+        
+        # else pivot column 
+        else {
+          
+          #store in L: the current column of A reduced so the pivot is 1
+          L[(i:A_nrows), i] <- U[(i:A_nrows), j] / U[i, j]
+          
+          #if last row, break 
+          if(i == A_nrows) {break}
+          
+          # else row-reduce each row in U below row i
+          else{
+             for(k in c((i+1):A_nrows)) {
+                U[k, j:A_ncols] <- (U[i, j:A_ncols] * -1 * L[k, i]) + U[k, j:A_ncols]
+             }
+          }
+            
+          break #once pivot found and associated work done, break to next row 
+        }
+      }
+    }
+    
+    U
+    L
+    
+    L %*% U
+    A
+    
+    
+```
