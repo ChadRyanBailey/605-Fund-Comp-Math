@@ -53,9 +53,9 @@ This script factorizes a matrix A into LU.
       }
     }
     
+## check that factorization was successful
     U
     L
-    
     L %*% U
     A
     
